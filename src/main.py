@@ -1,19 +1,28 @@
 import cv2 as cv
-from PIL.ImageOps import grayscale
+from lib.data_formatting import format_dataset, load_training_set, load_testing_set
+from lib.pca_method import load_config, recognize_faces
 
-original = cv.imread("assets/test.jpg")
+# Hyperparameters
+IMAGE_SIZE = 128
+MAX_PRINCIPLE_COMPONENTS = 100
 
-cv.imshow("Original", original)
-cv.waitKey(0)
+#format_dataset(IMAGE_SIZE)
 
-grayscale_image = cv.cvtColor(original, cv.COLOR_BGR2GRAY)
+training_set = load_training_set()
+testing_set = load_testing_set()
 
-face_cascade = cv.CascadeClassifier("assets/haarcascade_frontalface_default.xml")
+config = load_config(training_set, MAX_PRINCIPLE_COMPONENTS)
 
-faces = face_cascade.detectMultiScale(grayscale_image)
+training_mean = config['training_mean']
+pca_projection_matrix = config['pca_projection_matrix'].reshape(config['pca_projection_shape'])
 
-for (x, y, w, h) in faces:
-    cv.rectangle(original, (x, y), (x + w, y + h), (255, 0, 0), 2)
+indices = recognize_faces(training_set, testing_set, config)
+print(indices)
 
-cv.imshow("Faces", original)
-cv.waitKey(0)
+for i, j in zip(testing_set.T, indices):
+    print(i.shape)
+    cv.imshow("Test Image", i.reshape(IMAGE_SIZE, IMAGE_SIZE))
+    cv.imshow("Matched Image", training_set[:,j].reshape(IMAGE_SIZE, IMAGE_SIZE))
+    cv.waitKey(0)
+
+cv.destroyAllWindows()
