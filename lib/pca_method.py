@@ -1,7 +1,7 @@
-import cv2
 import numpy as np
 import json
 import os
+import cv2 as cv
 
 # Load the PCA classifier
 def load_config(training_set, MAX_PRINCIPLE_COMPONENTS):
@@ -43,6 +43,7 @@ def load_config(training_set, MAX_PRINCIPLE_COMPONENTS):
 
 def project_images(image_set, config):
     centered_images = np.array([i - config['training_mean'] for i in image_set.T]).T
+
     projected = config['pca_projection_matrix'].T @ centered_images
 
     return projected
