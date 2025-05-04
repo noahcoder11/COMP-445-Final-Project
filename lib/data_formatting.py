@@ -10,6 +10,7 @@ def load_training_set():
     for file in os.listdir(directory):
         filename = os.fsdecode(file)
         if filename.endswith(".jpg") or filename.endswith(".png") or filename.endswith(".jpeg"):
+            print(filename)
             image = cv.imread(os.path.join(directory, filename), cv.IMREAD_GRAYSCALE)
             training_set.append(image)
 
