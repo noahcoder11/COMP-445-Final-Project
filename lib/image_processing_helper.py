@@ -29,7 +29,7 @@ def preprocess_and_save_images(input_folder, output_folder, image_size=128):
             j=0
 
             for img in processed:
-                cv.imwrite(f"{output_path}/Ethan{i}{j}.png", img)
+                cv.imwrite(f"{output_path}/Omar{i}{j}.png", img)
                 j+=1
 
 
@@ -39,6 +39,6 @@ def preprocess_and_save_images(input_folder, output_folder, image_size=128):
 
 if __name__ == "__main__":
     input_folder = r"C:\Users\dream\OneDrive\Desktop\python3.12\COMP-445-Final-Project\assets\images\originals"
-    output_folder = r"C:\Users\dream\OneDrive\Desktop\python3.12\COMP-445-Final-Project\assets\images\training\Ethan"
+    output_folder = r"C:\Users\dream\OneDrive\Desktop\python3.12\COMP-445-Final-Project\assets\images\training\Omar"
 
     preprocess_and_save_images(input_folder, output_folder)
