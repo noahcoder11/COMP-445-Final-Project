@@ -13,8 +13,10 @@ MAX_PRINCIPLE_COMPONENTS = 50
 
 #format_dataset(IMAGE_SIZE)
 
-training_set = load_training_set()
+training_set, target_classes = load_training_set()
 testing_set = load_testing_set()
+
+print(target_classes)
 
 def runPCA(testing_set, training_set):
     config = load_config(training_set, MAX_PRINCIPLE_COMPONENTS)

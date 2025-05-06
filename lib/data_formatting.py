@@ -5,19 +5,21 @@ import os
 
 def load_training_set():
     training_set = []
+    classes = []
     directory = os.path.join(os.path.dirname(__file__), '../assets/images/training/')
 
-    for file in os.listdir(directory):
-        filename = os.fsdecode(file)
-        if filename.endswith(".jpg") or filename.endswith(".png") or filename.endswith(".jpeg"):
-            print(filename)
-            image = cv.imread(os.path.join(directory, filename), cv.IMREAD_GRAYSCALE)
-            training_set.append(image)
+    for subdir in os.listdir(directory):
+        for file in os.listdir(os.path.join(directory, subdir)):
+            filename = os.fsdecode(file)
+            if filename.endswith(".jpg") or filename.endswith(".png") or filename.endswith(".jpeg"):
+                image = cv.imread(os.path.join(directory, subdir, filename), cv.IMREAD_GRAYSCALE)
+                training_set.append(image)
+                classes.append(subdir)
 
     flattened_images = np.array([image.flatten() for image in training_set])
     normalized_images = flattened_images / 255.0
 
-    return normalized_images.T
+    return (normalized_images.T, classes)
 
 def load_testing_set():
     testing_set = []
