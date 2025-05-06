@@ -1,7 +1,8 @@
-import cv2
+import cv2 as cv
 import os
+import viola_jones as vj
 
-def preprocess_and_save_images(input_folder, output_folder, image_size=(128, 128)):
+def preprocess_and_save_images(input_folder, output_folder, image_size=128):
     """
     Reads all images from input_folder, converts to grayscale,
     center-crops them to square, resizes to image_size,
@@ -9,40 +10,35 @@ def preprocess_and_save_images(input_folder, output_folder, image_size=(128, 128
     """
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
+    
+    i = 0
 
     for filename in os.listdir(input_folder):
         input_path = os.path.join(input_folder, filename)
 
         if filename.lower().endswith((".png", ".jpg", ".jpeg", ".bmp", ".tif")):
-            img = cv2.imread(input_path)
+            img = cv.imread(input_path)
 
             if img is None:
                 print(f"⚠️ Could not read {filename}, skipping.")
                 continue
 
-            # Convert to grayscale
-            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            
+            processed = vj.viola_jones(img, image_size)
+            output_path = os.path.join(output_folder)
+            j=0
 
-            h, w = gray.shape
-            crop_size = min(h, w)
+            for img in processed:
+                cv.imwrite(f"{output_path}/Ethan{i}{j}.png", img)
+                j+=1
 
-            # Compute center crop coordinates
-            start_x = w // 2 - crop_size // 2
-            start_y = h // 2 - crop_size // 2
-            cropped = gray[start_y:start_y+crop_size, start_x:start_x+crop_size]
-
-            # Resize to target size
-            processed = cv2.resize(cropped, image_size)
-
-            output_path = os.path.join(output_folder, filename)
-            cv2.imwrite(output_path, processed)
-            print(f"✅ Saved {output_path}")
 
             os.remove(input_path)
             print(f"🗑️ Deleted original: {input_path}")
+            i+=1
 
 if __name__ == "__main__":
-    input_folder = r"C:\Users\dream\OneDrive\Desktop\python3.12\COMP-445-Final-Project\assets\images\selfies_to_be_processed"
-    output_folder = r"C:\Users\dream\OneDrive\Desktop\python3.12\COMP-445-Final-Project\assets\images\images_of_christian"
+    input_folder = r"C:\Users\dream\OneDrive\Desktop\python3.12\COMP-445-Final-Project\assets\images\originals"
+    output_folder = r"C:\Users\dream\OneDrive\Desktop\python3.12\COMP-445-Final-Project\assets\images\training\Ethan"
 
     preprocess_and_save_images(input_folder, output_folder)
