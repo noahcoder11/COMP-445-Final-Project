@@ -21,4 +21,4 @@ def viola_jones(image, image_size):
     for (x, y, w, h) in faces:
         face_windows.append(cv.resize(np.array(grayscale_image[y:y + h, x:x + w]), (image_size, image_size)))
 
-    return face_windows
+    return face_windows, faces
