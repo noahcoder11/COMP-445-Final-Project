@@ -1,6 +1,6 @@
 import os
 import cv2 as cv
-from lib.viola_jones import viola_jones
+from viola_jones import viola_jones
 
 def read_image_into_set(file_name, image_size):
     file_path = os.path.join(os.path.dirname(__file__), '../assets/images/originals/' + file_name)
@@ -40,7 +40,7 @@ def preprocess_and_save_images(input_folder, output_folder, image_size=128):
             j = 0
 
             for img in processed:
-                cv.imwrite(f"{output_path}/u{i}{j}.png", img)
+                cv.imwrite(f"{output_path}/Sammy{i}{j}.png", img)
                 j += 1
 
             os.remove(input_path)
@@ -50,7 +50,7 @@ def preprocess_and_save_images(input_folder, output_folder, image_size=128):
 
 if __name__ == "__main__":
     path = os.getcwd()
-    input_folder = path + "/../assets/images/originals"
-    output_folder = path + "/../assets/images/training/Unknown"
+    input_folder = r"C:\Users\dream\OneDrive\Desktop\python3.12\COMP-445-Final-Project\assets\images\originals"
+    output_folder = r"C:\Users\dream\OneDrive\Desktop\python3.12\COMP-445-Final-Project\assets\images\training\Sammy"
 
     preprocess_and_save_images(input_folder, output_folder)
