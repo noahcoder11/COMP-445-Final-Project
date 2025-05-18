@@ -6,7 +6,7 @@ parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
 from lib.data_formatting import load_training_set, load_testing_set
 from lib.pca_method import load_config, recognize_faces
-from lib.neural import initialize_model
+from lib.neural import load_model, test_model
 
 # Hyperparameters
 IMAGE_SIZE = 128
@@ -37,10 +37,9 @@ def runPCA(testing_set, training_set, classes):
     cv.destroyAllWindows()
 
 def runModel(testing_set, training_set, classes):
-    config = load_config(training_set, MAX_PRINCIPLE_COMPONENTS)
-
-    model = initialize_model(testing_set, training_set, classes)
+    model = load_model(training_set, classes)
+    test_model(model, testing_set)
 
 if __name__ == "__main__":
-    runPCA(testing_set, training_set, target_classes)
-    #runModel(testing_set, training_set, target_classes)
+    #runPCA(testing_set, training_set, target_classes)
+    runModel(testing_set, training_set, target_classes)

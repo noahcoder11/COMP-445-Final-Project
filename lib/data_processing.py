@@ -1,6 +1,6 @@
 import os
 import cv2 as cv
-from viola_jones import viola_jones
+from lib.viola_jones import viola_jones
 
 def read_image_into_set(file_name, image_size):
     file_path = os.path.join(os.path.dirname(__file__), '../assets/images/originals/' + file_name)

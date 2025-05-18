@@ -11,7 +11,7 @@ def viola_jones(image, image_size):
     faces = face_cascade.detectMultiScale(
         grayscale_image,
         scaleFactor=1.1,  # smaller step for image scale pyramid
-        minNeighbors=5,  # higher value = fewer false positives
+        minNeighbors=3,  # higher value = fewer false positives
         minSize=(30, 30),  # minimum object size to detect
         flags=cv.CASCADE_SCALE_IMAGE
     )
