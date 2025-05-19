@@ -47,16 +47,28 @@ def load_model(training_set, target_classes):
         train_model(model, training_set, target_classes)
     return model
 
+
 def test_model(model, testing_set):
     # ✅ 🎯 MAKE PREDICTIONS
-    predictions = model.predict(testing_set.T)  # shape: (num_test_samples, num_samples)
-    
-    # ✅ 🎯 GET PREDICTED CLASS INDICES
-    predicted_classes = np.argmax(predictions, axis=1)
+    predictions = model.predict(testing_set.T)  # shape: (num_test_samples, num_classes)
 
-    for img, pred in zip(testing_set.T, predicted_classes):
+    # ✅ 🎯 GET PREDICTED CLASS INDICES
+    predicted_indices = np.argmax(predictions, axis=1)
+
+    # ✅ 🎯 CONVERT INDICES TO CLASS LABELS
+    predicted_labels = [index_to_class_map[idx] for idx in predicted_indices]
+
+    # ✅ 🎯 VISUALIZATION (Optional)
+    for img, label in zip(testing_set.T, predicted_labels):
         img = img.reshape(IMAGE_SIZE, IMAGE_SIZE)
         bgr_image = cv.cvtColor((img * 255).astype(np.uint8), cv.COLOR_GRAY2BGR)
-        cv.putText(bgr_image, text=index_to_class_map[pred], org=(0, 20), fontFace=cv.FONT_HERSHEY_SIMPLEX, fontScale=0.5, color=(0, 0, 255), thickness=2)
+        cv.putText(bgr_image, text=label, org=(0, 20),
+                   fontFace=cv.FONT_HERSHEY_SIMPLEX, fontScale=0.5,
+                   color=(0, 0, 255), thickness=2)
         cv.imshow("Test Image", bgr_image)
         cv.waitKey(0)
+
+    cv.destroyAllWindows()
+
+    return predicted_labels
+
